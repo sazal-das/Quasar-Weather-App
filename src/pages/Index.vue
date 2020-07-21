@@ -21,12 +21,16 @@
 
     <template v-if="weatherData">
       <div class="col text-white text-center">
+        <div class="text-bold">{{this.day}}</div>
+        <div class="text-bold">{{this.date}}</div>
+        <div class="text-bold q-pb-md">{{this.time}}</div>
         <div class="text-h5 text-weight-light">{{this.weatherData.name}}</div>
         <div class="text-bold text-weight-light">{{this.weatherData.weather[0].main}}</div>
         <div class="q-my-sm text-h3 text-weight-light relative-position">
           <span>{{ Math.round(this.weatherData.main.temp) }}</span>
           <span class="degree text-h5 relative-position">&deg;C</span>
         </div>
+        
       </div>
 
       <div class="col text-center">
@@ -78,6 +82,7 @@
 </template>
 
 <script>
+const moment =  require('moment');
 import Vue from "vue";
 import axios from "axios";
 import { log } from "util";
@@ -94,7 +99,10 @@ export default Vue.extend({
       apiUrl: "https://api.openweathermap.org/data/2.5/weather",
       apiKey: "7e2158e7e859fa0625ae7cc82286721f",
       sunrise: null,
-      sunset: null
+      sunset: null,
+      time: "",
+      date: "",
+      day: ""
     };
   },
 
@@ -155,6 +163,12 @@ export default Vue.extend({
           this.sunset = `${sSet.getHours()}:${sSet.getMinutes()} PM`;
         }
 
+        let time = new Date().getTime();
+        this.date = moment(time).format('LL');
+        this.time = moment(time).format('LT');
+        this.day = moment(time).format('dddd');
+        
+
         this.$q.loading.hide();
       });
     },
@@ -180,6 +194,13 @@ export default Vue.extend({
         } else {
           this.sunset = `${sSet.getHours()}:${sSet.getMinutes()} PM`;
         }
+
+        let time = new Date().getTime();
+        this.date = moment(time).format('LL');
+        this.time = moment(time).format('LT');
+        this.day = moment(time).format('dddd');
+        
+        
 
         this.$q.loading.hide();
       });
