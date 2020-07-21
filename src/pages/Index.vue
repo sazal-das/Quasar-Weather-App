@@ -21,11 +21,11 @@
 
     <template v-if="weatherData">
       <div class="col text-white text-center">
-        <div class="text-h4 text-weight-light">{{this.weatherData.name}}</div>
-        <div class="text-h6 text-weight-light">{{this.weatherData.weather[0].main}}</div>
-        <div class="q-my-lg text-h1 text-weight-light relative-position">
+        <div class="text-h5 text-weight-light">{{this.weatherData.name}}</div>
+        <div class="text-bold text-weight-light">{{this.weatherData.weather[0].main}}</div>
+        <div class="q-my-sm text-h3 text-weight-light relative-position">
           <span>{{ Math.round(this.weatherData.main.temp) }}</span>
-          <span class="degree text-h4 relative-position">&deg;C</span>
+          <span class="degree text-h5 relative-position">&deg;C</span>
         </div>
       </div>
 
@@ -44,6 +44,35 @@
       </div>
     </template>
 
+    <template v-if="this.weatherData">
+      <div class="row q-pl-md q-pr-md text-center">
+        <div class="col text-white text-bold">Sunrise</div>
+        <div class="col text-white text-bold">Sunset</div>
+        <div class="col text-white text-bold">Wind</div>
+        <div class="col text-white text-bold">Humidity</div>
+      </div>
+      <div class="row q-pl-md q-pr-md text-center">
+        <div class="col">
+          <img :src="require('../assets/images/sunrise.png')" alt width="50px" height="50px" />
+        </div>
+        <div class="col">
+          <img :src="require('../assets/images/sunsets.png')" alt width="50px" height="50px" />
+        </div>
+        <div class="col">
+          <img :src="require('../assets/images/wind.png')" alt width="50px" height="50px" />
+        </div>
+        <div class="col">
+          <img :src="require('../assets/images/humidity.png')" alt width="50px" height="50px" />
+        </div>
+      </div>
+      <div class="row q-pl-md q-pr-md text-center">
+        <div class="col text-white text-bold">{{this.sunrise}}</div>
+        <div class="col text-white text-bold">{{this.sunset}}</div>
+        <div class="col text-white text-bold">{{this.weatherData.main.humidity}}</div>
+        <div class="col text-white text-bold">{{this.weatherData.wind.speed}}</div>
+      </div>
+    </template>
+
     <div class="col skyline"></div>
   </q-page>
 </template>
@@ -51,6 +80,7 @@
 <script>
 import Vue from "vue";
 import axios from "axios";
+import { log } from "util";
 
 export default Vue.extend({
   name: "PageIndex",
@@ -62,7 +92,9 @@ export default Vue.extend({
       latitude: null,
       longitude: null,
       apiUrl: "https://api.openweathermap.org/data/2.5/weather",
-      apiKey: "7e2158e7e859fa0625ae7cc82286721f"
+      apiKey: "7e2158e7e859fa0625ae7cc82286721f",
+      sunrise: null,
+      sunset: null
     };
   },
 
@@ -106,6 +138,23 @@ export default Vue.extend({
       ).then(response => {
         // console.log('response: ', response);
         this.weatherData = response.data;
+        console.log(this.weatherData);
+
+        let sRise = new Date(this.weatherData.sys.sunrise * 1000);
+        if (sRise.getHours() % 12 >= 1) {
+          this.sunrise = `${sRise.getHours() % 12}:${sRise.getMinutes()} AM`;
+        } else {
+          this.sunrise = `${sRise.getHours()}:${sRise.getMinutes()} AM`;
+        }
+        console.log(`${sRise.getHours()}:${sRise.getMinutes()} AM`);
+
+        let sSet = new Date(this.weatherData.sys.sunset * 1000);
+        if (sSet.getHours() % 12 >= 1) {
+          this.sunset = `${sSet.getHours() % 12}:${sSet.getMinutes()} PM`;
+        } else {
+          this.sunset = `${sSet.getHours()}:${sSet.getMinutes()} PM`;
+        }
+
         this.$q.loading.hide();
       });
     },
@@ -116,6 +165,22 @@ export default Vue.extend({
       ).then(response => {
         // console.log('response: ', response);
         this.weatherData = response.data;
+
+        let sRise = new Date(this.weatherData.sys.sunrise * 1000);
+        if (sRise.getHours() % 12 >= 1) {
+          this.sunrise = `${sRise.getHours() % 12}:${sRise.getMinutes()} AM`;
+        } else {
+          this.sunrise = `${sRise.getHours()}:${sRise.getMinutes()} AM`;
+        }
+        console.log(`${sRise.getHours()}:${sRise.getMinutes()} AM`);
+
+        let sSet = new Date(this.weatherData.sys.sunset * 1000);
+        if (sSet.getHours() % 12 >= 1) {
+          this.sunset = `${sSet.getHours() % 12}:${sSet.getMinutes()} PM`;
+        } else {
+          this.sunset = `${sSet.getHours()}:${sSet.getMinutes()} PM`;
+        }
+
         this.$q.loading.hide();
       });
     }
@@ -134,7 +199,7 @@ export default Vue.extend({
   }
 }
 .degree {
-  top: -44px;
+  top: -23px;
 }
 .skyline {
   flex: 0 0 100px;
