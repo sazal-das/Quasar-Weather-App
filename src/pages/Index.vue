@@ -30,7 +30,6 @@
           <span>{{ Math.round(this.weatherData.main.temp) }}</span>
           <span class="degree text-h5 relative-position">&deg;C</span>
         </div>
-        
       </div>
 
       <div class="col text-center">
@@ -82,7 +81,7 @@
 </template>
 
 <script>
-const moment =  require('moment');
+const moment = require("moment");
 import Vue from "vue";
 import axios from "axios";
 import { log } from "util";
@@ -102,17 +101,38 @@ export default Vue.extend({
       sunset: null,
       time: "",
       date: "",
-      day: ""
+      day: "",
+      rain: false,
+      thunderstorm: false
     };
   },
 
   computed: {
     bgClass() {
       if (this.weatherData) {
-        if (this.weatherData.weather[0].icon.endsWith("n")) {
-          return "bg-Night";
-        } else {
-          return "bg-Day";
+        // if (this.weatherData.weather[0].icon.endsWith("n")) {
+        //   return "bg-Night";
+        // } else {
+        //   return "bg-Day";
+        // }
+        if (this.weatherData.weather[0].main === "Thunderstorm") {
+          return "thunderstorm";
+        } else if (this.weatherData.weather[0].main === "Rain") {
+          return "rain";
+        } else if (this.weatherData.weather[0].main === "Clouds") {
+          return "clouds";
+        } else if (this.weatherData.weather[0].main === "Clear") {
+          if (this.weatherData.weather[0].icon.endsWith("n")) {
+            return "night_clear";
+          } else {
+            return "clear";
+          }
+        } else if (this.weatherData.weather[0].main === "Haze") {
+          if (this.weatherData.weather[0].icon.endsWith("n")) {
+            return "bg-Night";
+          } else {
+            return "bg-Day";
+          }
         }
       }
     }
@@ -164,10 +184,9 @@ export default Vue.extend({
         }
 
         let time = new Date().getTime();
-        this.date = moment(time).format('LL');
-        this.time = moment(time).format('LT');
-        this.day = moment(time).format('dddd');
-        
+        this.date = moment(time).format("LL");
+        this.time = moment(time).format("LT");
+        this.day = moment(time).format("dddd");
 
         this.$q.loading.hide();
       });
@@ -196,11 +215,9 @@ export default Vue.extend({
         }
 
         let time = new Date().getTime();
-        this.date = moment(time).format('LL');
-        this.time = moment(time).format('LT');
-        this.day = moment(time).format('dddd');
-        
-        
+        this.date = moment(time).format("LL");
+        this.time = moment(time).format("LT");
+        this.day = moment(time).format("dddd");
 
         this.$q.loading.hide();
       });
@@ -217,6 +234,22 @@ export default Vue.extend({
   }
   &.bg-Day {
     background: linear-gradient(to right, #2193b0, #6dd5ed);
+  }
+  &.thunderstorm {
+    background: url("../assets/images/flash2.jpg");
+  }
+  &.rain {
+    background: url("../assets/images/rain.png");
+    background-size: cover;
+  }
+  &.clouds {
+    background: url("../assets/images/clouds.jpg");
+  }
+  &.clear {
+    background: url("../assets/images/clear.jpg");
+  }
+  &.night_clear {
+    background: url("../assets/images/night_clear.png");
   }
 }
 .degree {
