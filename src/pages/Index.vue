@@ -1,6 +1,6 @@
 <template>
   <q-page class="flex column" :class="bgClass">
-    <div class="col q-pt-lg q-px-md">
+    <div class="col q-px-md">
       <q-input
         v-model="search"
         @keyup.enter="getWeatherBySearch"
@@ -23,10 +23,10 @@
       <div class="col text-white text-center">
         <div class="text-bold">{{this.day}}</div>
         <div class="text-bold">{{this.date}}</div>
-        <div class="text-bold q-pb-md">{{this.time}}</div>
-        <div class="text-h5 text-weight-light">{{this.weatherData.name}}</div>
+        <div class="text-bold q-pb-sm">{{this.time}}</div>
+        <div class="text-h6 text-weight-light">{{this.weatherData.name}}</div>
         <div class="text-bold text-weight-light">{{this.weatherData.weather[0].main}}</div>
-        <div class="q-my-sm text-h3 text-weight-light relative-position">
+        <div class="text-h3 text-weight-light relative-position">
           <span>{{ Math.round(this.weatherData.main.temp) }}</span>
           <span class="degree text-h5 relative-position">&deg;C</span>
         </div>
@@ -38,9 +38,9 @@
     </template>
 
     <template v-else>
-      <div class="col column text-center text-white">
-        <div class="text-h2 col text-weight-thin">Weather</div>
-        <q-btn class="col" flat @click="getLocation">
+      <div class="col text-center text-white">
+        <div class="text-h2 col text-weight-thin q-pa-lg">Weather</div>
+        <q-btn class="col q-pa-lg" flat @click="getLocation">
           <q-icon left size="3em" name="my_location" />
           <div>Find My Location</div>
         </q-btn>
@@ -75,6 +75,44 @@
         <div class="col text-white text-bold">{{this.weatherData.wind.speed}}</div>
       </div>
     </template>
+    <template v-if="this.weatherData">
+      <div class="row text-center q-pl-md q-pr-md">
+        <div class="col text-bold text-white">{{this.dayName1}}</div>
+        <div class="col text-bold text-white">{{this.dayName2}}</div>
+        <div class="col text-bold text-white">{{this.dayName3}}</div>
+        <div class="col text-bold text-white">{{this.dayName4}}</div>
+        <div class="col text-bold text-white">{{this.dayName5}}</div>
+      </div>
+      <div class="row text-center q-pl-md q-pr-md">
+        <div class="col"><img class="col icon" :src="`http://openweathermap.org/img/wn/${this.daysData.list[0].weather[0].icon}@2x.png`" /></div>
+        <div class="col"><img class="icon" :src="`http://openweathermap.org/img/wn/${this.daysData.list[6].weather[0].icon}@2x.png`" /></div>
+        <div class="col"><img class="icon" :src="`http://openweathermap.org/img/wn/${this.daysData.list[14].weather[0].icon}@2x.png`" /></div>
+        <div class="col"><img class="icon" :src="`http://openweathermap.org/img/wn/${this.daysData.list[22].weather[0].icon}@2x.png`" /></div>
+        <div class="col"><img class="icon" :src="`http://openweathermap.org/img/wn/${this.daysData.list[30].weather[0].icon}@2x.png`" /></div>
+      </div>
+      <div class="row text-center q-pl-md q-pr-md">
+        <div class="col">
+          <span class="text-bold text-white">{{ Math.round(this.daysData.list[6].main.temp) }}</span>
+          <span class="degree2 text-white relative-position">&deg;C</span>
+        </div>
+        <div class="col">
+          <span class="text-bold text-white">{{ Math.round(this.daysData.list[14].main.temp) }}</span>
+          <span class="degree2 text-white relative-position">&deg;C</span>
+        </div>
+        <div class="col">
+          <span class="text-bold text-white">{{ Math.round(this.daysData.list[22].main.temp) }}</span>
+          <span class="degree2 text-white relative-position">&deg;C</span>
+        </div>
+        <div class="col">
+          <span class="text-bold text-white">{{ Math.round(this.daysData.list[30].main.temp) }}</span>
+          <span class="degree2 text-white relative-position">&deg;C</span>
+        </div>
+        <div class="col">
+          <span class="text-bold text-white">{{ Math.round(this.daysData.list[37].main.temp) }}</span>
+          <span class="degree2 text-white relative-position">&deg;C</span>
+        </div>
+      </div>
+    </template>
 
     <div class="col skyline"></div>
   </q-page>
@@ -93,9 +131,11 @@ export default Vue.extend({
     return {
       search: "",
       weatherData: null,
+      daysData: null,
       latitude: null,
       longitude: null,
       apiUrl: "https://api.openweathermap.org/data/2.5/weather",
+      apiUrl2: "https://api.openweathermap.org/data/2.5/forecast",
       apiKey: "7e2158e7e859fa0625ae7cc82286721f",
       sunrise: null,
       sunset: null,
@@ -103,7 +143,13 @@ export default Vue.extend({
       date: "",
       day: "",
       rain: false,
-      thunderstorm: false
+      thunderstorm: false,
+      dayName1: null,
+      dayName2: null,
+      dayName3: null,
+      dayName4: null,
+      dayName5: null,
+
     };
   },
 
@@ -190,7 +236,35 @@ export default Vue.extend({
 
         this.$q.loading.hide();
       });
+      // Get 5 days weather
+      this.$axios(
+        `${this.apiUrl2}?lat=${this.latitude}&lon=${this.longitude}&appid=${this.apiKey}&units=metric`
+      ).then(response => {
+        // console.log('response: ', response);
+        this.daysData = response.data;
+        console.log(this.daysData);
+        let alldays = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+
+        let a = new Date(this.daysData.list[6].dt * 1000);
+        this.dayName1 = alldays[a.getDay()];
+        
+        let b = new Date(this.daysData.list[14].dt * 1000);
+        this.dayName2 = alldays[b.getDay()];
+
+        let c = new Date(this.daysData.list[22].dt * 1000);
+        this.dayName3 = alldays[c.getDay()];
+
+        let d = new Date(this.daysData.list[30].dt * 1000);
+        this.dayName4 = alldays[d.getDay()];
+
+        let e = new Date(this.daysData.list[37].dt * 1000);
+        this.dayName5 = alldays[e.getDay()];
+        
+        
+      });
     },
+
+
     getWeatherBySearch() {
       this.$q.loading.show();
       this.$axios(
@@ -221,6 +295,33 @@ export default Vue.extend({
 
         this.$q.loading.hide();
       });
+      // Get 5 days weather
+      this.$axios(
+        `${this.apiUrl2}?q=${this.search}&appid=${this.apiKey}&units=metric`
+      ).then(response => {
+        // console.log('response: ', response);
+        this.daysData = response.data;
+        console.log(this.daysData);
+        let alldays = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+
+        let a = new Date(this.daysData.list[6].dt * 1000);
+        this.dayName1 = alldays[a.getDay()];
+        
+        let b = new Date(this.daysData.list[14].dt * 1000);
+        this.dayName2 = alldays[b.getDay()];
+
+        let c = new Date(this.daysData.list[22].dt * 1000);
+        this.dayName3 = alldays[c.getDay()];
+
+        let d = new Date(this.daysData.list[30].dt * 1000);
+        this.dayName4 = alldays[d.getDay()];
+
+        let e = new Date(this.daysData.list[37].dt * 1000);
+        this.dayName5 = alldays[e.getDay()];
+        
+        
+      });
+      
     }
   }
 });
@@ -255,10 +356,17 @@ export default Vue.extend({
 .degree {
   top: -23px;
 }
+.degree2 {
+  top: -5px;
+}
 .skyline {
   flex: 0 0 100px;
   background: url("../assets/images/skyline.png");
   background-size: contain;
   background-position: center bottom;
+}
+.icon{
+  height: auto;
+  width: 50px;
 }
 </style>
