@@ -1,6 +1,8 @@
 <template>
   <q-page class="flex column" :class="bgClass">
-    <div class="col q-px-md">
+
+    <!-- Search Bar -->
+    <div class="col-1 q-px-md">
       <q-input
         v-model="search"
         @keyup.enter="getWeatherBySearch"
@@ -19,11 +21,14 @@
       </q-input>
     </div>
 
+
+    <!-- Main Template -->
     <template v-if="weatherData">
       <q-tabs
         v-model="tab"
         dense
-        class="text-grey-10 tab"
+        class="text-grey-2 tab"
+        style="z-index:10;"
         active-color="primary"
         indicator-color="primary"
         align="justify"
@@ -37,7 +42,7 @@
 
       <!-- <q-separator /> -->
 
-      <q-tab-panels v-model="tab" class="transparent" animated>
+      <q-tab-panels v-model="tab" class="transparent" style="z-index:10;" animated>
         <!-- Current Time data -->
         <q-tab-panel name="now">
           <div class="col text-white text-center">
@@ -346,8 +351,13 @@
                       class="text-white text-bold"
                     >{{ Math.round(this.daysData.list[0].main.temp_max) }}</span>
                     <span class="degree2 text-white relative-position">&deg;</span>
+                    <span class="text-white text-bold"> / </span>
+                    <span
+                      class="text-white text-bold"
+                    >{{ Math.round(this.daysData.list[0].main.temp_min) }}</span>
+                    <span class="degree2 text-white relative-position">&deg;</span>
                   </div>
-                  <div class="text-grey">High</div>
+                  <div class="text-grey">High / Low</div>
                 </q-itemsection>
               </q-item>
               <q-separator class="bg-grey" />
@@ -370,10 +380,15 @@
                   <div>
                     <span
                       class="text-white text-bold"
+                    >{{ Math.round(this.daysData.list[5].main.temp_max) }}</span>
+                    <span class="degree2 text-white relative-position">&deg;</span>
+                    <span class="text-white text-bold"> / </span>
+                    <span
+                      class="text-white text-bold"
                     >{{ Math.round(this.daysData.list[5].main.temp_min) }}</span>
                     <span class="degree2 text-white relative-position">&deg;</span>
                   </div>
-                  <div class="text-grey">Low</div>
+                  <div class="text-grey">High / Low</div>
                 </q-itemsection>
               </q-item>
             </q-card>
@@ -406,8 +421,13 @@
                       class="text-white text-bold"
                     >{{ Math.round(this.daysData.list[6].main.temp_max) }}</span>
                     <span class="degree2 text-white relative-position">&deg;</span>
+                    <span class="text-white text-bold"> / </span>
+                    <span
+                      class="text-white text-bold"
+                    >{{ Math.round(this.daysData.list[6].main.temp_min) }}</span>
+                    <span class="degree2 text-white relative-position">&deg;</span>
                   </div>
-                  <div class="text-grey">High</div>
+                  <div class="text-grey">High / Low</div>
                 </q-itemsection>
               </q-item>
               <q-separator class="bg-grey" />
@@ -430,10 +450,15 @@
                   <div>
                     <span
                       class="text-white text-bold"
+                    >{{ Math.round(this.daysData.list[12].main.temp_max) }}</span>
+                    <span class="degree2 text-white relative-position">&deg;</span>
+                    <span class="text-white text-bold"> / </span>
+                    <span
+                      class="text-white text-bold"
                     >{{ Math.round(this.daysData.list[12].main.temp_min) }}</span>
                     <span class="degree2 text-white relative-position">&deg;</span>
                   </div>
-                  <div class="text-grey">Low</div>
+                  <div class="text-grey">High / Low</div>
                 </q-itemsection>
               </q-item>
             </q-card>
@@ -466,8 +491,13 @@
                       class="text-white text-bold"
                     >{{ Math.round(this.daysData.list[13].main.temp_max) }}</span>
                     <span class="degree2 text-white relative-position">&deg;</span>
+                    <span class="text-white text-bold"> / </span>
+                    <span
+                      class="text-white text-bold"
+                    >{{ Math.round(this.daysData.list[13].main.temp_min) }}</span>
+                    <span class="degree2 text-white relative-position">&deg;</span>
                   </div>
-                  <div class="text-grey">High</div>
+                  <div class="text-grey">High / Low</div>
                 </q-itemsection>
               </q-item>
               <q-separator class="bg-grey" />
@@ -490,10 +520,15 @@
                   <div>
                     <span
                       class="text-white text-bold"
+                    >{{ Math.round(this.daysData.list[19].main.temp_max) }}</span>
+                    <span class="degree2 text-white relative-position">&deg;</span>
+                    <span class="text-bold text-white"> / </span>
+                    <span
+                      class="text-white text-bold"
                     >{{ Math.round(this.daysData.list[19].main.temp_min) }}</span>
                     <span class="degree2 text-white relative-position">&deg;</span>
                   </div>
-                  <div class="text-grey">Low</div>
+                  <div class="text-grey">High / Low</div>
                 </q-itemsection>
               </q-item>
             </q-card>
@@ -526,8 +561,13 @@
                       class="text-white text-bold"
                     >{{ Math.round(this.daysData.list[20].main.temp_max) }}</span>
                     <span class="degree2 text-white relative-position">&deg;</span>
+                    <span class="text-bold text-white"> / </span>
+                    <span
+                      class="text-white text-bold"
+                    >{{ Math.round(this.daysData.list[20].main.temp_min) }}</span>
+                    <span class="degree2 text-white relative-position">&deg;</span>
                   </div>
-                  <div class="text-grey">High</div>
+                  <div class="text-grey">High / Low</div>
                 </q-itemsection>
               </q-item>
               <q-separator class="bg-grey" />
@@ -550,10 +590,15 @@
                   <div>
                     <span
                       class="text-white text-bold"
+                    >{{ Math.round(this.daysData.list[27].main.temp_max) }}</span>
+                    <span class="degree2 text-white relative-position">&deg;</span>
+                    <span class="text-bold text-white"> / </span>
+                    <span
+                      class="text-white text-bold"
                     >{{ Math.round(this.daysData.list[27].main.temp_min) }}</span>
                     <span class="degree2 text-white relative-position">&deg;</span>
                   </div>
-                  <div class="text-grey">Low</div>
+                  <div class="text-grey">High / Low</div>
                 </q-itemsection>
               </q-item>
             </q-card>
@@ -586,8 +631,13 @@
                       class="text-white text-bold"
                     >{{ Math.round(this.daysData.list[28].main.temp_max) }}</span>
                     <span class="degree2 text-white relative-position">&deg;</span>
+                    <span class="text-bold text-white"> / </span>
+                    <span
+                      class="text-white text-bold"
+                    >{{ Math.round(this.daysData.list[28].main.temp_min) }}</span>
+                    <span class="degree2 text-white relative-position">&deg;</span>
                   </div>
-                  <div class="text-grey">High</div>
+                  <div class="text-grey">High / Low</div>
                 </q-itemsection>
               </q-item>
               <q-separator class="bg-grey" />
@@ -610,10 +660,15 @@
                   <div>
                     <span
                       class="text-white text-bold"
+                    >{{ Math.round(this.daysData.list[35].main.temp_max) }}</span>
+                    <span class="degree2 text-white relative-position">&deg;</span>
+                    <span class="text-bold text-white"> / </span>
+                    <span
+                      class="text-white text-bold"
                     >{{ Math.round(this.daysData.list[35].main.temp_min) }}</span>
                     <span class="degree2 text-white relative-position">&deg;</span>
                   </div>
-                  <div class="text-grey">Low</div>
+                  <div class="text-grey">High / Low</div>
                 </q-itemsection>
               </q-item>
             </q-card>
@@ -646,8 +701,13 @@
                       class="text-white text-bold"
                     >{{ Math.round(this.daysData.list[36].main.temp_max) }}</span>
                     <span class="degree2 text-white relative-position">&deg;</span>
+                    <span class="text-bold text-white"> / </span>
+                    <span
+                      class="text-white text-bold"
+                    >{{ Math.round(this.daysData.list[36].main.temp_min) }}</span>
+                    <span class="degree2 text-white relative-position">&deg;</span>
                   </div>
-                  <div class="text-grey">High</div>
+                  <div class="text-grey">High / Low</div>
                 </q-itemsection>
               </q-item>
               <q-separator class="bg-grey" />
@@ -670,19 +730,26 @@
                   <div>
                     <span
                       class="text-white text-bold"
+                    >{{ Math.round(this.daysData.list[39].main.temp_max) }}</span>
+                    <span class="degree2 text-white relative-position">&deg;</span>
+                    <span class="text-bold text-white"> / </span>
+                    <span
+                      class="text-white text-bold"
                     >{{ Math.round(this.daysData.list[39].main.temp_min) }}</span>
                     <span class="degree2 text-white relative-position">&deg;</span>
                   </div>
-                  <div class="text-grey">Low</div>
+                  <div class="text-grey">High / Low</div>
                 </q-itemsection>
               </q-item>
             </q-card>
           </q-list>
         </q-tab-panel>
-        <div class="col skyline"></div>
+
       </q-tab-panels>
     </template>
-    <template v-else>
+
+    <!-- Opening Template -->
+    <div v-else class="fixed-center" style="z-index:10;">
       <div class="col text-center text-white">
         <div class="text-h2 col text-weight-thin q-pa-lg">Weather</div>
         <q-btn class="col q-pa-lg" flat @click="getLocation">
@@ -690,9 +757,10 @@
           <div>Find My Location</div>
         </q-btn>
       </div>
-    </template>
+    </div>
 
-    <div class="col skyline"></div>
+    <div class="" style="height: 100px;"></div>
+    <div class="skyline"></div>
   </q-page>
 </template>
 
@@ -764,6 +832,8 @@ export default Vue.extend({
   },
 
   methods: {
+
+    // Get latitude and longitude
     getLocation() {
       this.$q.loading.show();
       if (this.$q.platform.is.electron) {
@@ -784,6 +854,8 @@ export default Vue.extend({
         });
       }
     },
+
+    // Get weather  update by coords
     getWeatherByCoords() {
       this.$q.loading.show();
       this.$axios(
@@ -925,6 +997,7 @@ export default Vue.extend({
 <style lang="scss">
 .q-page {
   background: linear-gradient(to right, #136a8a, #267871);
+  position: relative;
   &.bg-Night {
     background: linear-gradient(to right, #232526, #414345);
   }
@@ -955,17 +1028,22 @@ export default Vue.extend({
   top: -5px;
 }
 .skyline {
-  flex: 0 0 100px;
+  //flex: 0 0 100px;
   background: url("../assets/images/skyline.png");
   background-size: contain;
   background-position: center bottom;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  height:100px;
+  width: 100%;
 }
 .icon {
   height: auto;
   width: 50px;
 }
 .tab {
-  background: #0c5e72;
+  background-color:rgba(10, 9, 9, 0.233);
 }
 .tab-panel {
   background: linear-gradient(to right, #2193b0, #6dd5ed);
