@@ -22,4 +22,4 @@ quasar build
 See [Configuring quasar.conf.js](https://quasar.dev/quasar-cli/quasar-conf-js).
 
 #Main Code Portion
-
+src/pages/Index.vue
